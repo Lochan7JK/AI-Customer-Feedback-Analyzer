@@ -20,7 +20,8 @@ def init_db():
             review TEXT,
             label TEXT,
             score INTEGER,
-            theme TEXT
+            theme TEXT,
+            suggestion TEXT
         )
     """)
     conn.commit()
@@ -32,8 +33,18 @@ def save_results(results):
     conn = sqlite3.connect(DB_FILE)
     for r in results:
         conn.execute(
-            "INSERT INTO feedback (review, label, score, theme) VALUES (?, ?, ?, ?)",
-            (r["review"], r["label"], r["score"], r["theme"]),
+            """
+            INSERT INTO feedback
+            (review, label, score, theme, suggestion)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                r["review"],
+                r["label"],
+                r["score"],
+                r["theme"],
+                r["suggestion"],
+            ),
         )
     conn.commit()
     conn.close()
@@ -43,7 +54,7 @@ def load_history():
     """Read every review we have saved so far."""
     conn = sqlite3.connect(DB_FILE)
     rows = conn.execute(
-        "SELECT review, label, score, theme FROM feedback"
+        "SELECT review, label, score, theme, suggestion FROM feedback"
     ).fetchall()
     conn.close()
     return rows
