@@ -7,6 +7,8 @@ exactly the way we called external APIs in Lesson 9.
 
 Run it (in a SECOND terminal, while api.py is also running):
     uv run streamlit run app.py
+    OR 
+    streamlit run app.py
 """
 
 from collections import Counter
@@ -46,6 +48,7 @@ if st.button("Analyze"):
                     "label": data["label"],
                     "score": data["score"],
                     "theme": data["theme"],
+                    "suggestion": data["suggestion"],
                 })
             except Exception:
                 # One bad review should not stop the whole batch.
@@ -54,10 +57,12 @@ if st.button("Analyze"):
                     "label": "error",
                     "score": 0,
                     "theme": "error",
+                    "suggestion": "None",
                 })
 
         # Save results in session_state so they survive button clicks.
         st.session_state.results = results
+
 
 # Show the results if we have any.
 if "results" in st.session_state:
@@ -78,15 +83,22 @@ if "results" in st.session_state:
         col2.metric("Average score", round(sum(scores) / len(scores), 1))
         col3.metric("% Positive", f"{round(len(positive) / len(results) * 100)}%")
 
+
     if themes:
+        theme_counts = Counter(themes)
+
         # Counter tells us which theme appears most often.
-        top_theme = Counter(themes).most_common(1)[0][0]
+        top_theme = theme_counts.most_common(1)[0][0]
         st.info(f"Customers talk most about: **{top_theme}**")
+
+        st.subheader("Theme Distribution")
+        st.bar_chart(theme_counts)
 
     # ---- Save the full report to the database (Lesson 12) ----
     if st.button("💾 Save to database"):
         save_results(results)
         st.success(f"Saved {len(results)} reviews to {DB_FILE}")
+
 
 # ---- Show everything we have ever saved (reads from the database) ----
 with st.expander("📚 Saved history (all reviews in the database)"):
@@ -94,7 +106,17 @@ with st.expander("📚 Saved history (all reviews in the database)"):
     if history:
         st.write(f"Total saved so far: {len(history)}")
         st.dataframe(
-            [{"review": r[0], "label": r[1], "score": r[2], "theme": r[3]} for r in history]
+            # [{"review": r[0], "label": r[1], "score": r[2], "theme": r[3], "suggestion": r[4]} for r in history]
+            [
+                {
+                    "review": r[0],
+                    "label": r[1],
+                    "score": r[2],
+                    "theme": r[3],
+                    "suggestion": r[4],
+                }
+                for r in history
+            ]
         )
     else:
         st.write("Nothing saved yet. Analyze some reviews and click Save.")
