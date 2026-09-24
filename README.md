@@ -58,14 +58,12 @@ The application allows a business owner to paste multiple customer reviews, anal
 
 The Streamlit dashboard allows users to enter multiple customer reviews, one review per line, and analyze them using the AI backend.
 
-![Customer Feedback Analyzer Dashboard](screenshots/dashboard_results.png)
-
 
 ### Analysis Results
 
 The application displays the sentiment label, score, main theme, and AI-generated suggestion for each review.
 
-![Customer Feedback Analyzer Results](screenshots/results.png)
+![Customer Feedback Analyzer Dashboard](screenshots/dashboard_results.png)
 
 
 ### Summary and Theme Distribution
@@ -110,6 +108,4 @@ Analyzed reviews can be saved to a local SQLite database and viewed later throug
                   │      SQLite DB      │
                   │    database.py      │
                   └─────────────────────┘
-
----
 
