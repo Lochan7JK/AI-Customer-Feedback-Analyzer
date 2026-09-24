@@ -3,6 +3,8 @@ The backend: a small FastAPI service that analyzes ONE customer review.
 
 Run it with:
     uv run fastapi dev api.py
+    OR
+    fastapi run api.py
 
 Then the Streamlit app (app.py) will call this service for every review.
 """
@@ -30,6 +32,7 @@ class Analysis(BaseModel):
     label: str   # "positive", "negative", or "neutral"
     score: int   # 1 (very bad) to 5 (very good)
     theme: str   # one word: what the review is mainly about (e.g. "delivery")
+    suggestion: str 
 
 
 @app.post("/analyze")
@@ -42,6 +45,9 @@ def analyze(review: Review):
             "score must be a number from 1 (very bad) to 5 (very good).\n"
             "theme must be ONE lowercase word for the main topic "
             "(for example: delivery, taste, price, service, quality).\n"
+            "suggestion must be a short one-line suggestion for improving the "
+            "business IF the review is negative. For positive or neutral reviews, "
+            "suggestion must be 'None'.\n"
             f"Review: {review.text}"
         ),
         config=types.GenerateContentConfig(
