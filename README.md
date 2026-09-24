@@ -52,34 +52,6 @@ The application allows a business owner to paste multiple customer reviews, anal
 
 ---
 
-## 🏗️ Project Architecture
-
-```text
-                  ┌─────────────────────┐
-                  │     Streamlit UI    │
-                  │       app.py        │
-                  └──────────┬──────────┘
-                             │
-                             │ HTTP POST
-                             ▼
-                  ┌─────────────────────┐
-                  │     FastAPI API     │
-                  │       api.py        │
-                  └──────────┬──────────┘
-                             │
-                             │ Gemini API
-                             ▼
-                  ┌─────────────────────┐
-                  │    Google Gemini    │
-                  └─────────────────────┘
-
-                  ┌─────────────────────┐
-                  │      SQLite DB      │
-                  │    database.py      │
-                  └─────────────────────┘
-
----
-
 ## 📸 Screenshots
 
 ### Main Dashboard
@@ -110,3 +82,34 @@ A bar chart visualizes how frequently each theme appears across the analyzed rev
 Analyzed reviews can be saved to a local SQLite database and viewed later through the saved history section.
 
 ![Customer Feedback Analyzer Saved History](screenshots/history.png)
+
+---
+
+## 🏗️ Project Architecture
+
+```text
+                  ┌─────────────────────┐
+                  │     Streamlit UI    │
+                  │       app.py        │
+                  └──────────┬──────────┘
+                             │
+                             │ HTTP POST
+                             ▼
+                  ┌─────────────────────┐
+                  │     FastAPI API     │
+                  │       api.py        │
+                  └──────────┬──────────┘
+                             │
+                             │ Gemini API
+                             ▼
+                  ┌─────────────────────┐
+                  │    Google Gemini    │
+                  └─────────────────────┘
+
+                  ┌─────────────────────┐
+                  │      SQLite DB      │
+                  │    database.py      │
+                  └─────────────────────┘
+
+---
+
